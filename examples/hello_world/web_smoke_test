@@ -1,0 +1,17 @@
+#!/bin/bash
+set -e
+
+echo "Running chrome driver"
+
+dart dev/webdriver_test.dart &
+
+sleep 5
+echo "Running flutter"
+
+flutter run -v -d web-server --profile --local-engine=host_debug_unopt --target=test_driver/smoke_web_engine.dart --web-port=8080 &
+
+sleep 20
+
+echo "Running flutter drive"
+
+flutter drive -v --target=test_driver/smoke_web_engine.dart --use-existing-app=http://localhost:8080/
